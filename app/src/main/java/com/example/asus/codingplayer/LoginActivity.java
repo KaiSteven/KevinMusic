@@ -2,7 +2,6 @@ package com.example.asus.codingplayer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,75 +15,84 @@ import cn.bmob.v3.listener.SaveListener;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
+    EditText login_name,login_password;
+    Button login_button,register_button;
 
-    EditText register_id,register_password;
-    Button register_button;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_layout);
+        setContentView(R.layout.login_layout);
 
-        //获取界面相关的VIEW
-        register_id = (EditText) findViewById(R.id.register_id);
-        register_password = (EditText) findViewById(R.id.register_password);
+        //获取界面中相关的View
+        login_name = (EditText) findViewById(R.id.login_name);
+        login_password = (EditText) findViewById(R.id.login_password);
+        login_button = (Button) findViewById(R.id.login_button);
         register_button = (Button) findViewById(R.id.register_button);
-        //按钮点击事件
+        //设置登录按钮点击事件
+        login_button.setOnClickListener(this);
+        //注册按钮跳转
         register_button.setOnClickListener(this);
-
     }
+
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.login_button:
+                goLogin();
+                break;
             case R.id.register_button:
-                toRegister();
+                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
                 break;
         }
     }
 
     /**
-     * 注册方法
+     * 登录方法
      */
-
-    private void toRegister() {
+    private void goLogin() {
         //获取用户输入的用户名和密码
-        String username = register_id.getText().toString();
-        String password = register_password.getText().toString();
+        String username = login_name.getText().toString();
+        String password = login_password.getText().toString();
         //非空验证
         if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
             Toast.makeText(this,"用户名或密码不能为空", LENGTH_SHORT).show();
             return;
         }
 
-        //使用BmobSDK提供注册功能
+        //使用BmobSDK提供登录功能
         MyUser user = new MyUser();
         user.setUsername(username);
         user.setPassword(password);
-
-        user.signUp(new SaveListener<MyUser>() {
+        user.login(new SaveListener<MyUser>() {
 
             @Override
-            public void done(MyUser s, BmobException e) {
-                if (e == null){
-                    Toast.makeText(RegisterActivity.this, "注册成功" , Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+            public void done(MyUser myUser, BmobException e) {
+                if(e == null){
+                    Toast.makeText(LoginActivity.this, "登录成功！" , Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
-
                 }else{
-                    Toast.makeText(RegisterActivity.this, "注册失败" , Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, "登录失败" , Toast.LENGTH_LONG).show();
+
                 }
             }
-
         });
     }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // ignore
     ///////////////////////////////////////////////////////////////////////////
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
     @Override
     public void publish(int progress) {
 
@@ -95,4 +103,3 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     }
 }
-

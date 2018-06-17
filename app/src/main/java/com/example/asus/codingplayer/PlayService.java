@@ -13,7 +13,7 @@ import com.example.asus.codingplayer.vo.Mp3Info;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.Executor;
+//import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,12 +30,12 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
     private MediaPlayer mPlayer;
     private int currentPosition;//当前正在播放的歌曲的位置
     ArrayList<Mp3Info> mp3Infos;
-    private MusicUpdateListener musicUpdateListener;
+    private MusicUpdateListener musicUpdateListener;//设置属性
     private ExecutorService es = Executors.newSingleThreadExecutor();
 
     private boolean isPause = false;
 
-    //播放模式
+    //播放模式：顺序播放、单曲播放、随机播放
     private int play_mode = ORDER_PLAY;
     public static final int ORDER_PLAY = 1;//顺序播放
     public static final int RANDOM_PLAY = 2;//随机播放
@@ -66,7 +66,7 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
     }
 
     private Random random = new Random();
-
+//用于监听当前歌曲播放完后，下一首如何播放
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         switch (play_mode) {
@@ -114,7 +114,7 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
         mp3Infos = MediaUtils.getMp3Infos(this);
         es.execute(updateStatusRunnable);
     }
-
+    //启动线程就得销毁
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -208,6 +208,7 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
         return 0;
     }
 
+    //在音乐播放中，获得播放的位置信息
     public int getDuration() {
         return mPlayer.getDuration();
     }

@@ -16,6 +16,7 @@
 
 package com.example.asus.codingplayer;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -33,9 +34,9 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.astuetz.viewpager.extensions.sample.QuickContactFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -57,6 +58,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
 
+
+
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -72,6 +75,7 @@ public class MainActivity extends BaseActivity {
         changeColor(currentColor);
 
     }
+
 
     @Override
     public void publish(int progress) {
@@ -93,7 +97,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -101,10 +105,16 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-            case R.id.action_contact:
-                QuickContactFragment dialog = new QuickContactFragment();
-                dialog.show(getSupportFragmentManager(), "QuickContactFragment");
+            case R.id.action_login:
+                Toast.makeText(this, "登录", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.action_register:
+                Toast.makeText(this, "注册", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, RegisterActivity.class));
+                return true;
+            case R.id.action_like:
+                startActivity(new Intent(this, MyLikeMusicListActivity.class));
                 return true;
 
         }
@@ -198,6 +208,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
         private final String[] TITLES = {getString(R.string.my_music),getString(R.string.find_music)};
@@ -236,13 +247,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //保存当前播放的一些状态值
-        CodingPlayerAPP app = (CodingPlayerAPP) getApplication();
-        SharedPreferences.Editor editor = app.sp.edit();
-        editor.putInt("currentPosition",playService.getCurrentPosition());
-        editor.putInt("play_mode", playService.getPlay_mode());
-        editor.commit();
-
+        if (playService != null) {
+            //保存当前播放的一些状态值
+            CodingPlayerAPP app = (CodingPlayerAPP) getApplication();
+            SharedPreferences.Editor editor = app.sp.edit();
+            editor.putInt("currentPosition",playService.getCurrentPosition());
+            editor.putInt("play_mode", playService.getPlay_mode());
+            editor.commit();
+        }
     }
 
 

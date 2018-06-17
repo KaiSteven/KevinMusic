@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-
+/**
+ * 自定义基础activity，用来让其他activity继承，作为工具activity，用于绑定服务
+ */
 public abstract class BaseActivity extends FragmentActivity{
 
     protected PlayService playService;
@@ -27,6 +29,7 @@ public abstract class BaseActivity extends FragmentActivity{
             PlayService.PlayBinder playBinder = (PlayService.PlayBinder)service;
             playService = playBinder.getPlayService();
             playService.setMusicUpdateListener(musicUpdateListener);
+            //绑定成功后调用监听onChange方法
             musicUpdateListener.onChange(playService.getCurrentPosition());
         }
 

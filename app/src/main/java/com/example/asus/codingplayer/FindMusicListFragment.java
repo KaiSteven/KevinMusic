@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.astuetz.viewpager.extensions.sample.SuperAwesomeCardFragment;
+
 
 public class FindMusicListFragment extends Fragment{
     private ListView Listview_my_music;

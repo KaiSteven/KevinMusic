@@ -99,7 +99,7 @@ public class MyMusicListFragment extends Fragment implements OnItemClickListener
 
     //回调播放状态下的UI设置
     public void changeUIStatusOnPlay(int position) {
-        if (position >= 0 && position <= mp3Infos.size()) {
+        if (position >= 0 && position < mp3Infos.size()) {
             Mp3Info mp3Info = mp3Infos.get(position);
             textView_songName.setText(mp3Info.getTitle());
             textView2_singer.setText(mp3Info.getArtist());

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background_window">#FFE5E5E5</color>
+    <color name="list_item_selector_color">#b9e0fc</color>
+    <color name="colorLoginEditText">#dad2cf</color>
+    <color name="colorlogin_text">#000000</color>
+    <color name="colorlogin_button">#ffb192</color>
+
 </resources>
